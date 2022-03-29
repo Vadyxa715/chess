@@ -4,10 +4,7 @@ import com.chess.engine.Alliance;
 import com.chess.engine.pieces.*;
 import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Board {
 
@@ -19,9 +16,33 @@ public class Board {
         this.gameBoard = createGameBoard(builder);
         this.whitePiece = calculetedActivePieces(this.gameBoard, Alliance.WHITE);
         this.blackPiece = calculetedActivePieces(this.gameBoard, Alliance.BLACK);
+
+        final Collection<Move> whiteStandardLegalMoves = calculateLegalMove(this.whitePiece);
+        final Collection<Move> blackStandardLegalMoves = calculateLegalMove(this.blackPiece);
     }
 
-    private Collection<Piece> calculetedActivePieces(final List<Tile> gameBoard,
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < BoardUtils.NUM_TILES; i++) {
+            final String tileText = this.gameBoard.get(i).toString();
+            builder.append(String.format("%3s",tileText));
+            if ((i + 1) % BoardUtils.NUM_TILES_PER_ROW == 0) {
+                builder.append("\n");
+            }
+        }
+        return builder.toString();
+    }
+
+    private Collection<Move> calculateLegalMove(final Collection<Piece> pieces) {
+        final List<Move> legalMove = new ArrayList<>();
+        for (final Piece  piece: pieces) {
+            legalMove.addAll(piece.calculateLegalMoves(this));
+        }
+        return ImmutableList.copyOf(legalMove);
+    }
+
+    private static Collection<Piece> calculetedActivePieces(final List<Tile> gameBoard,
                                                      final Alliance alliance) {
 
         final List<Piece> activePieces = new ArrayList<>();
@@ -100,7 +121,7 @@ public class Board {
         Alliance nextMoveMaker;
 
         public Builder() {
-
+            this.boardConfig = new HashMap<>();
         }
 
         public Builder setPiece (final Piece piece) {
