@@ -19,7 +19,7 @@ public class Bishop extends Piece{
 
     public Bishop(final Alliance pieceAlliance,
                   final int piecePosition) {
-        super(piecePosition, pieceAlliance);
+        super(PieceType.BISHOP, piecePosition, pieceAlliance);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Bishop extends Piece{
                 candidateDestinationCoordinate += candidateCoordinateOffset;
                 if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
-                    if (candidateDestinationTile.isTileOccupied()) {
+                    if (!candidateDestinationTile.isTileOccupied()) {
                         legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                     } else {
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();

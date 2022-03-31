@@ -20,7 +20,7 @@ public class King extends Piece{
 
     public King(final Alliance pieceAlliance,
                 final int piecePosition) {
-        super(piecePosition, pieceAlliance);
+        super(PieceType.KING, piecePosition, pieceAlliance);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class King extends Piece{
                    isEighthColumnExclusion(this.piecePosition, currentCandidateOffSet)) {
                     continue;
                 }
-                if (candidateDestinationTile.isTileOccupied()) {
+                if (!candidateDestinationTile.isTileOccupied()) {
                     legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                 } else {
                     final Piece pieceAtDestination = candidateDestinationTile.getPiece();

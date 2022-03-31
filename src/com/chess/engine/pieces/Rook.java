@@ -18,7 +18,7 @@ public class Rook extends Piece{
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-8, -1, 1, 8};
 
     public Rook(final Alliance pieceAlliance, final int piecePosition) {
-        super(piecePosition, pieceAlliance);
+        super(PieceType.ROOK, piecePosition, pieceAlliance);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class Rook extends Piece{
                 candidateDestinationCoordinate += candidateCoordinateOffset;
                 if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
-                    if (candidateDestinationTile.isTileOccupied()) {
+                    if (!candidateDestinationTile.isTileOccupied()) {
                         legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                     } else {
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
